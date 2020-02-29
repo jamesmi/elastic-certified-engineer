@@ -1,10 +1,11 @@
+# How to setup a Elastic lab environment
 
-# 1. docer@Elastic
-https://www.docker.elastic.co/
+## 1. Check docker fils from docer@Elastic
+      https://www.docker.elastic.co/
 
-# 2. download docker images
+## 2. Download docker images
 ```console
-$ docker pull docker.elastic.co/elasticsearch/elasticsearch:7.2.1
+James-MacBook:~ james$ docker pull docker.elastic.co/elasticsearch/elasticsearch:7.2.1
 7.2.1: Pulling from elasticsearch/elasticsearch
 48914619bcd3: Pull complete 
 8c18761bf9ee: Pull complete 
@@ -16,7 +17,7 @@ ec47f86d8ba6: Pull complete
 Digest: sha256:55ca47a99487d1d0a71648fa971545de202d70cc4a9581993a555101879cafde
 Status: Downloaded newer image for docker.elastic.co/elasticsearch/elasticsearch:7.2.1
 docker.elastic.co/elasticsearch/elasticsearch:7.2.1
-Jamess-MacBook-Pro:temp james$ docker pull docker.elastic.co/kibana/kibana:7.2.1
+James-MacBook:~ james$ docker pull docker.elastic.co/kibana/kibana:7.2.1
 7.2.1: Pulling from kibana/kibana
 48914619bcd3: Already exists 
 1a17800dd949: Pull complete 
@@ -29,7 +30,7 @@ dae043d493aa: Pull complete
 Digest: sha256:727c7a7b814f957e69bd73c243b3a8dc14196bfbd23dd242a8d16333242e966f
 Status: Downloaded newer image for docker.elastic.co/kibana/kibana:7.2.1
 docker.elastic.co/kibana/kibana:7.2.1
-Jamess-MacBook-Pro:temp james$ docker pull docker.elastic.co/logstash/logstash:7.2.1
+James-MacBook:~ james$ docker pull docker.elastic.co/logstash/logstash:7.2.1
 7.2.1: Pulling from logstash/logstash
 48914619bcd3: Already exists 
 a2620b52fccf: Pull complete 
@@ -45,7 +46,7 @@ baf7179fbb9f: Pull complete
 Digest: sha256:b6d8f582aeeb3a93c4905266a016d9c182b257deb2302839d33ec8cdaee0d325
 Status: Downloaded newer image for docker.elastic.co/logstash/logstash:7.2.1
 docker.elastic.co/logstash/logstash:7.2.1
-Jamess-MacBook-Pro:temp james$ docker pull docker.elastic.co/beats/filebeat:7.2.1
+James-MacBook:~ james$ docker pull docker.elastic.co/beats/filebeat:7.2.1
 7.2.1: Pulling from beats/filebeat
 48914619bcd3: Already exists 
 4814bef37fd0: Pull complete 
@@ -57,5 +58,5 @@ eeadbd43f496: Pull complete
 Digest: sha256:3b8bc61e7452321ee81da622a5a3ebc8982e778defee223fef7701edd74e70ea
 Status: Downloaded newer image for docker.elastic.co/beats/filebeat:7.2.1
 docker.elastic.co/beats/filebeat:7.2.1
-Jamess-MacBook-Pro:temp james$ 
+James-MacBook:~ james$ 
 ```
