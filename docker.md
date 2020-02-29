@@ -1,7 +1,7 @@
 # How to setup Elastic docker lab environment
 
 ## 1. Check docker files from docker@Elastic
-    [URL]: <https://www.docker.elastic.co/>
+    https://www.docker.elastic.co/
 
 ## 2. Download docker images
 ```console
