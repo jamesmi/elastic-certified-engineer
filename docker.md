@@ -3,7 +3,7 @@
 https://www.docker.elastic.co/
 
 # 2. download docker images
-
+```bash
 Jamess-MacBook-Pro:temp james$ docker pull docker.elastic.co/elasticsearch/elasticsearch:7.2.1
 7.2.1: Pulling from elasticsearch/elasticsearch
 48914619bcd3: Pull complete 
@@ -58,3 +58,4 @@ Digest: sha256:3b8bc61e7452321ee81da622a5a3ebc8982e778defee223fef7701edd74e70ea
 Status: Downloaded newer image for docker.elastic.co/beats/filebeat:7.2.1
 docker.elastic.co/beats/filebeat:7.2.1
 Jamess-MacBook-Pro:temp james$ 
+```
