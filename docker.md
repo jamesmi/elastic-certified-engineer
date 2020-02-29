@@ -1,6 +1,6 @@
-# How to setup a Elastic lab environment
+# How to setup Elastic docker lab environment
 
-## 1. Check docker fils from docer@Elastic
+## 1. Check docker files from docker@Elastic
     https://www.docker.elastic.co/
 
 ## 2. Download docker images
@@ -60,3 +60,4 @@ Status: Downloaded newer image for docker.elastic.co/beats/filebeat:7.2.1
 docker.elastic.co/beats/filebeat:7.2.1
 James-MacBook:~ james$ 
 ```
+## 3. 
