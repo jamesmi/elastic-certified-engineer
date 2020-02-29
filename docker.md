@@ -3,8 +3,8 @@
 https://www.docker.elastic.co/
 
 # 2. download docker images
-```bash
-Jamess-MacBook-Pro:temp james$ docker pull docker.elastic.co/elasticsearch/elasticsearch:7.2.1
+```console
+$ docker pull docker.elastic.co/elasticsearch/elasticsearch:7.2.1
 7.2.1: Pulling from elasticsearch/elasticsearch
 48914619bcd3: Pull complete 
 8c18761bf9ee: Pull complete 
