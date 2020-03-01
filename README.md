@@ -38,10 +38,11 @@ three-nodes-cluster
 
 
 #### macOS
-Install [Docker for Mac](https://docs.docker.com/docker-for-mac/install/)
 
 The default Docker for Mac configuration allows mounting files from `/Users/`, `/Volumes/`, `/private/`, and `/tmp`
 exclusively.
+
+* Install [Docker for Mac](https://docs.docker.com/docker-for-mac/install/)
 
 * [Download Docker Images](https://www.docker.elastic.co/) version **7.2.1**
 ```console
@@ -57,6 +58,18 @@ docker.elastic.co/elasticsearch/elasticsearch   7.2.1               1e8add8d7b66
 docker.elastic.co/beats/filebeat                7.2.1               7bd56506b1d7        7 months ago        362MB
 James-MacBook:elastic-docker james$
 ```
+
+* Start single-node-cluster via docker-compose command
+```console
+James-MacBook:elastic-docker james$ cd single-node-cluster/
+James-MacBook:single-node-cluster james$ ls
+docker-compose.yml
+James-MacBook:single-node-cluster james$ docker-compose up
+```
+
+* Access Kibana UI in your browser
+
+    http://localhost:15601
 
 
 #### Linux
