@@ -13,8 +13,6 @@
 
 
 
-
-
 ## Lab environment
 
 ### Linux VM
@@ -25,9 +23,16 @@ You can install ELK on your Linux server
 
 * [Docker Engine](https://docs.docker.com/install/) version **17.05+**
 * [Docker Compose](https://docs.docker.com/compose/install/) version **1.12.0+**
-* 1.5 GB of RAM
+* Resources: CPUs 2, Memory 4GB, Disk 40GB
 
-By default, the stack exposes the following ports:
+In our lab environments, the elastic stack exposes the following ports:
+
+single-node-cluster
+* 19200: Elasticsearch HTTP
+* 19300: Elasticsearch TCP transport
+* 15601: Kibana
+
+three-nodes-cluster
 * 9200: Elasticsearch HTTP
 * 9300: Elasticsearch TCP transport
 * 5601: Kibana
