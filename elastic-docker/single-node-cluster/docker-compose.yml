@@ -18,8 +18,8 @@ services:
     volumes:
       - elasticsearchdata01:/usr/share/elasticsearch/data
     ports:
-      - 9200:9200
-      - 9300:9300
+      - 19200:9200
+      - 19300:9300
     networks:
       - elasticsearchnet
 
@@ -31,7 +31,7 @@ services:
       - xpack.monitoring.enabled=true
       - xpack.monitoring.kibana.collection.enabled=true
     ports:
-      - "5601:5601"
+      - "15601:5601"
     networks:
       - elasticsearchnet
     depends_on:
