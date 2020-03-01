@@ -23,18 +23,17 @@ You can install ELK on your Linux server
 * [Docker Engine](https://docs.docker.com/install/) version **17.05+**
 * [Docker Compose](https://docs.docker.com/compose/install/) version **1.12.0+**
 * Resources: CPUs 2, Memory 4GB, Disk 40GB
+* In our lab environments, the elastic stack exposes the following ports:
 
-In our lab environments, the elastic stack exposes the following ports:
+  single-node-cluster
+  * 19200: Elasticsearch HTTP
+  * 19300: Elasticsearch TCP transport
+  * 15601: Kibana
 
-single-node-cluster
-* 19200: Elasticsearch HTTP
-* 19300: Elasticsearch TCP transport
-* 15601: Kibana
-
-three-nodes-cluster
-* 9200: Elasticsearch HTTP
-* 9300: Elasticsearch TCP transport
-* 5601: Kibana
+  three-nodes-cluster
+  * 9200: Elasticsearch HTTP
+  * 9300: Elasticsearch TCP transport
+  * 5601: Kibana
 
 
 #### macOS
@@ -45,27 +44,27 @@ exclusively.
 * Install [Docker for Mac](https://docs.docker.com/docker-for-mac/install/)
 
 * [Download Docker Images](https://www.docker.elastic.co/) version **7.2.1**
-```console
-James-MacBook:~ james$ docker pull docker.elastic.co/elasticsearch/elasticsearch:7.2.1
-James-MacBook:~ james$ docker pull docker.elastic.co/kibana/kibana:7.2.1
-James-MacBook:~ james$ docker pull docker.elastic.co/logstash/logstash:7.2.1
-James-MacBook:~ james$ docker pull docker.elastic.co/beats/filebeat:7.2.1
-James-MacBook:~ james$ docker image ls
-REPOSITORY                                      TAG                 IMAGE ID            CREATED             SIZE
-docker.elastic.co/logstash/logstash             7.2.1               398ae1bce45b        7 months ago        837MB
-docker.elastic.co/kibana/kibana                 7.2.1               a9d9159c1e37        7 months ago        891MB
-docker.elastic.co/elasticsearch/elasticsearch   7.2.1               1e8add8d7b66        7 months ago        862MB
-docker.elastic.co/beats/filebeat                7.2.1               7bd56506b1d7        7 months ago        362MB
-James-MacBook:elastic-docker james$
-```
+  ```console
+  James-MacBook:~ james$ docker pull docker.elastic.co/elasticsearch/elasticsearch:7.2.1
+  James-MacBook:~ james$ docker pull docker.elastic.co/kibana/kibana:7.2.1
+  James-MacBook:~ james$ docker pull docker.elastic.co/logstash/logstash:7.2.1
+  James-MacBook:~ james$ docker pull docker.elastic.co/beats/filebeat:7.2.1
+  James-MacBook:~ james$ docker image ls
+  REPOSITORY                                      TAG                 IMAGE ID            CREATED             SIZE
+  docker.elastic.co/logstash/logstash             7.2.1               398ae1bce45b        7 months ago        837MB
+  docker.elastic.co/kibana/kibana                 7.2.1               a9d9159c1e37        7 months ago        891MB
+  docker.elastic.co/elasticsearch/elasticsearch   7.2.1               1e8add8d7b66        7 months ago        862MB
+  docker.elastic.co/beats/filebeat                7.2.1               7bd56506b1d7        7 months ago        362MB
+  James-MacBook:elastic-docker james$
+  ```
 
 * Start single-node-cluster via docker-compose command
-```console
-James-MacBook:elastic-docker james$ cd single-node-cluster/
-James-MacBook:single-node-cluster james$ ls
-docker-compose.yml
-James-MacBook:single-node-cluster james$ docker-compose up
-```
+  ```console
+  James-MacBook:elastic-docker james$ cd single-node-cluster/
+  James-MacBook:single-node-cluster james$ ls
+  docker-compose.yml
+  James-MacBook:single-node-cluster james$ docker-compose up
+  ```
 
 * Check Elasticsearch and Kibana status
 
@@ -86,14 +85,16 @@ Install Docker on Linux
 
 ## Useful URL
 
-Official URL
-* [Register Elastic Certified Engineer](https://training.elastic.co/exam/elastic-certified-engineer)
-* [Run the Elastic Stack on Docker](https://www.elastic.co/guide/en/elastic-stack-get-started/master/get-started-docker.html)
-* [Docker Compose Command](https://docs.docker.com/compose/reference/overview/)
-* [Elasticsearch on docker](https://www.elastic.co/guide/en/elasticsearch/reference/7.2/docker.html)
-* [The definitive guide](https://www.elastic.co/guide/en/elasticsearch/guide/current/index.html)
-* [Elasticsearch reference](https://www.elastic.co/guide/en/elasticsearch/reference/7.2/index.html)
-* [`FAQ`](https://www.elastic.co/training/certification/faq): Certification FAQ 
+#### Elastic Stack URL
+  * [Register Elastic Certified Engineer](https://training.elastic.co/exam/elastic-certified-engineer)
+  * [Run the Elastic Stack on Docker](https://www.elastic.co/guide/en/elastic-stack-get-started/master/get-started-docker.html)
+  * [The definitive guide](https://www.elastic.co/guide/en/elasticsearch/guide/current/index.html)
+  * [Elasticsearch reference](https://www.elastic.co/guide/en/elasticsearch/reference/7.2/index.html)
+  * [`FAQ`](https://www.elastic.co/training/certification/faq): Certification FAQ 
+  
+#### Docker URL  
+  * [Docker Compose Command](https://docs.docker.com/compose/reference/overview/)
+  * [Elasticsearch on docker](https://www.elastic.co/guide/en/elasticsearch/reference/7.2/docker.html)
 
 
 
