@@ -3,20 +3,20 @@
 
 ## Contents
 
-1. [Lab environments](#Lab environment)
-   * [Linux](#Linux)
+1. [Lab environments](#lab-environment)
+   * [Linux VM](#linux-vm)
    * [Docker for Desktop](#docker-for-desktop)
      * [Windows](#windows)
+     * [Linux](#linux)
      * [macOS](#macos)
-2. [Usage](#usage)
+2. [Useful URL](#useful-url)
 
 
 ## Lab environment
 
-### Linux
+### Linux VM
 
-  You can install ELK on your Linux server
-
+You can install ELK on your Linux server
 
 ### Docker for Desktop
 
@@ -33,6 +33,10 @@ By default, the stack exposes the following ports:
 
 Ensure the [Shared Drives][win-shareddrives] feature is enabled for the `C:` drive.
 
+#### Linux
+
+Install Docker on Linux
+
 #### macOS
 
 The default Docker for Mac configuration allows mounting files from `/Users/`, `/Volumes/`, `/private/`, and `/tmp`
@@ -40,15 +44,10 @@ exclusively. Make sure the repository is cloned in one of those locations or fol
 [documentation][mac-mounts] to add more locations.
 
 
+## Useful URL
 
-
-
-Useful URL:
-
+Official URL
 * [Register Elastic Certified Engineer](https://training.elastic.co/exam/elastic-certified-engineer)
-
-Other available stack variants:
-
 * [`FAQ`](https://www.elastic.co/training/certification/faq): Certification FAQ 
 
 
