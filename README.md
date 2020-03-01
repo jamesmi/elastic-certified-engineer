@@ -9,8 +9,9 @@
      * [macOS](#macos)
      * [Linux](#linux)
 2. [Useful URL](#useful-url)
-
-
+   * [Elastic Stack](#elastic-stack)
+   * [Docker](#docker)
+   
 
 ## Lab environment
 
@@ -118,21 +119,16 @@ exclusively.
     ```
 
 
-#### Linux
-
-Install Docker on Linux
-
-
 ## Useful URL
 
-#### Elastic Stack URL
+#### Elastic Stack
   * [Register Elastic Certified Engineer](https://training.elastic.co/exam/elastic-certified-engineer)
   * [Run the Elastic Stack on Docker](https://www.elastic.co/guide/en/elastic-stack-get-started/master/get-started-docker.html)
   * [The definitive guide](https://www.elastic.co/guide/en/elasticsearch/guide/current/index.html)
   * [Elasticsearch reference](https://www.elastic.co/guide/en/elasticsearch/reference/7.2/index.html)
   * [`FAQ`](https://www.elastic.co/training/certification/faq): Certification FAQ 
   
-#### Docker URL  
+#### Docker  
   * [Docker Compose Command](https://docs.docker.com/compose/reference/overview/)
   * [Elasticsearch on docker](https://www.elastic.co/guide/en/elasticsearch/reference/7.2/docker.html)
 
