@@ -6,9 +6,8 @@
 1. [Lab environments](#lab-environment)
    * [Linux VM](#linux-vm)
    * [Docker for Desktop](#docker-for-desktop)
-     * [Windows](#windows)
-     * [Linux](#linux)
      * [macOS](#macos)
+     * [Linux](#linux)
 2. [Useful URL](#useful-url)
 
 
@@ -38,15 +37,8 @@ three-nodes-cluster
 * 5601: Kibana
 
 
-#### Windows
-
-Ensure the [Shared Drives][win-shareddrives] feature is enabled for the `C:` drive.
-
-#### Linux
-
-Install Docker on Linux
-
 #### macOS
+Install [Docker for Mac](https://docs.docker.com/docker-for-mac/install/)
 
 The default Docker for Mac configuration allows mounting files from `/Users/`, `/Volumes/`, `/private/`, and `/tmp`
 exclusively.
@@ -65,6 +57,12 @@ docker.elastic.co/elasticsearch/elasticsearch   7.2.1               1e8add8d7b66
 docker.elastic.co/beats/filebeat                7.2.1               7bd56506b1d7        7 months ago        362MB
 James-MacBook:elastic-docker james$
 ```
+
+
+#### Linux
+
+Install Docker on Linux
+
 
 ## Useful URL
 
