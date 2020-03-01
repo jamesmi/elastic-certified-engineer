@@ -35,6 +35,13 @@ You can install ELK on your Linux server
   * 9200: Elasticsearch HTTP
   * 9300: Elasticsearch TCP transport
   * 5601: Kibana
+ 
+ * Elastic Stack docker detail information
+ 
+    | Cluster             | Detail               |
+    |---------------------|----------------------|
+    | single-node-cluster | 1 ES, 1 Kibana       |
+    | three-nodes-cluster | 3 ES, 1 Kibana       |
 
 
 #### macOS
