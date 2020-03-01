@@ -29,6 +29,22 @@ By default, the stack exposes the following ports:
 * 9300: Elasticsearch TCP transport
 * 5601: Kibana
 
+* [Download Docker Images](https://www.docker.elastic.co/) version **7.2.1**
+```console
+James-MacBook:~ james$ docker pull docker.elastic.co/elasticsearch/elasticsearch:7.2.1
+James-MacBook:~ james$ docker pull docker.elastic.co/kibana/kibana:7.2.1
+James-MacBook:~ james$ docker pull docker.elastic.co/logstash/logstash:7.2.1
+James-MacBook:~ james$ docker pull docker.elastic.co/beats/filebeat:7.2.1
+James-MacBook:~ james$ docker image ls
+REPOSITORY                                      TAG                 IMAGE ID            CREATED             SIZE
+docker.elastic.co/logstash/logstash             7.2.1               398ae1bce45b        7 months ago        837MB
+docker.elastic.co/kibana/kibana                 7.2.1               a9d9159c1e37        7 months ago        891MB
+docker.elastic.co/elasticsearch/elasticsearch   7.2.1               1e8add8d7b66        7 months ago        862MB
+docker.elastic.co/beats/filebeat                7.2.1               7bd56506b1d7        7 months ago        362MB
+James-MacBook:elastic-docker james$
+```
+
+
 #### Windows
 
 Ensure the [Shared Drives][win-shareddrives] feature is enabled for the `C:` drive.
