@@ -29,6 +29,20 @@ By default, the stack exposes the following ports:
 * 9300: Elasticsearch TCP transport
 * 5601: Kibana
 
+
+#### Windows
+
+Ensure the [Shared Drives][win-shareddrives] feature is enabled for the `C:` drive.
+
+#### Linux
+
+Install Docker on Linux
+
+#### macOS
+
+The default Docker for Mac configuration allows mounting files from `/Users/`, `/Volumes/`, `/private/`, and `/tmp`
+exclusively.
+
 * [Download Docker Images](https://www.docker.elastic.co/) version **7.2.1**
 ```console
 James-MacBook:~ james$ docker pull docker.elastic.co/elasticsearch/elasticsearch:7.2.1
@@ -43,22 +57,6 @@ docker.elastic.co/elasticsearch/elasticsearch   7.2.1               1e8add8d7b66
 docker.elastic.co/beats/filebeat                7.2.1               7bd56506b1d7        7 months ago        362MB
 James-MacBook:elastic-docker james$
 ```
-
-
-#### Windows
-
-Ensure the [Shared Drives][win-shareddrives] feature is enabled for the `C:` drive.
-
-#### Linux
-
-Install Docker on Linux
-
-#### macOS
-
-The default Docker for Mac configuration allows mounting files from `/Users/`, `/Volumes/`, `/private/`, and `/tmp`
-exclusively. Make sure the repository is cloned in one of those locations or follow the instructions from the
-[documentation][mac-mounts] to add more locations.
-
 
 ## Useful URL
 
