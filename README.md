@@ -93,6 +93,17 @@ exclusively.
   docker-compose.yml
   James-MacBook:single-node-cluster james$ docker-compose up
   ```
+* Check container status
+  ```console
+  James-MacBook:three-nodes-cluster james$ docker-compose ps
+  Name              Command               State                Ports              
+  --------------------------------------------------------------------------------
+  es01   /usr/local/bin/docker-entr ...   Up      0.0.0.0:9200->9200/tcp, 9300/tcp
+  es02   /usr/local/bin/docker-entr ...   Up      0.0.0.0:9201->9200/tcp, 9300/tcp
+  es03   /usr/local/bin/docker-entr ...   Up      0.0.0.0:9202->9200/tcp, 9300/tcp
+  kb01   /usr/local/bin/kibana-docker     Up      0.0.0.0:5601->5601/tcp          
+  James-MacBook:three-nodes-cluster james$
+  ```
 
 * Check Elasticsearch and Kibana status
 
