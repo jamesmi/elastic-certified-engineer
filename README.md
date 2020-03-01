@@ -67,9 +67,16 @@ docker-compose.yml
 James-MacBook:single-node-cluster james$ docker-compose up
 ```
 
-* Access Kibana UI in your browser
+* Check Elasticsearch and Kibana status
 
-    http://localhost:15601
+    Kibana: http://localhost:15601/status
+    
+    APIs:
+    ```console
+    James-MacBook:~ james$ curl http://localhost:19200/_cat/nodes
+    172.22.0.2 39 97 6 0.67 0.52 0.56 mdi * elasticsearch01
+    James-MacBook:~ james$ curl http://localhost:19200/api/status
+    ```
 
 
 #### Linux
