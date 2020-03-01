@@ -74,7 +74,47 @@ exclusively.
     ```console
     James-MacBook:~ james$ curl http://localhost:19200/_cat/nodes
     172.22.0.2 39 97 6 0.67 0.52 0.56 mdi * elasticsearch01
-    James-MacBook:~ james$ curl http://localhost:19200/api/status
+    James-MacBook:~ james$ curl http://localhost:15601/api/status
+    ```
+
+* Start three-nodes-cluster via docker-compose command
+  ```console
+  James-MacBook:elastic-docker james$ cd three-nodes-cluster/
+  James-MacBook:three-nodes-cluster james$ ls
+  docker-compose.yml
+  James-MacBook:single-node-cluster james$ docker-compose up
+  ```
+
+* Check Elasticsearch and Kibana status
+
+    Kibana: http://localhost:5601/status
+    
+    APIs:
+    ```console
+    James-MacBook:~ james$ curl -u elastic:changeme http://localhost:9200/_cat/nodes
+    172.24.0.3 40 97 15 0.42 0.41 0.44 mdi * es03
+    172.24.0.2 47 97 16 0.42 0.41 0.44 mdi - es02
+    172.24.0.4 33 97 10 0.42 0.41 0.44 mdi - es01
+    James-MacBook:~ james$ curl -u elastic:changeme http://localhost:9200
+    {
+      "name" : "es01",
+      "cluster_name" : "docker-cluster",
+      "cluster_uuid" : "BWeXUEp4RMCIK_TKcEfSuw",
+      "version" : {
+        "number" : "7.2.1",
+        "build_flavor" : "default",
+        "build_type" : "docker",
+        "build_hash" : "fe6cb20",
+        "build_date" : "2019-07-24T17:58:29.979462Z",
+        "build_snapshot" : false,
+        "lucene_version" : "8.0.0",
+        "minimum_wire_compatibility_version" : "6.8.0",
+        "minimum_index_compatibility_version" : "6.0.0-beta1"
+      },
+      "tagline" : "You Know, for Search"
+    }
+    James-MacBook:~ james$ 
+    James-MacBook:~ james$ curl http://localhost:5601/api/status
     ```
 
 
