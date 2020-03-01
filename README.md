@@ -22,17 +22,7 @@ Elastic Stack docker detail information
 | single-node-cluster | 1 ES, 1 Kibana       |
 | three-nodes-cluster | 3 ES, 1 Kibana       |
     
-
-### Linux VM
-
-You can install ELK on your Linux server
-
-### Docker for Desktop
-
-* [Docker Engine](https://docs.docker.com/install/) version **17.05+**
-* [Docker Compose](https://docs.docker.com/compose/install/) version **1.12.0+**
-* Resources: CPUs 2, Memory 4GB, Disk 40GB
-* In our lab environments, the elastic stack exposes the following ports:
+In our lab environments, the elastic stack exposes the following ports:
 
   single-node-cluster
   * 19200: Elasticsearch HTTP
@@ -43,6 +33,16 @@ You can install ELK on your Linux server
   * 9200: Elasticsearch HTTP
   * 9300: Elasticsearch TCP transport
   * 5601: Kibana
+  
+### Linux VM
+
+You can install ELK on your Linux server
+
+### Docker for Desktop
+
+* [Docker Engine](https://docs.docker.com/install/) version **17.05+**
+* [Docker Compose](https://docs.docker.com/compose/install/) version **1.12.0+**
+* Resources: CPUs 2, Memory 4GB, Disk 40GB
  
 
 #### macOS
