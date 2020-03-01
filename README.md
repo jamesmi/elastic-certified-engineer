@@ -23,7 +23,6 @@ You can install ELK on your Linux server
 * [Docker Engine](https://docs.docker.com/install/) version **17.05+**
 * [Docker Compose](https://docs.docker.com/compose/install/) version **1.12.0+**
 * 1.5 GB of RAM
-
 By default, the stack exposes the following ports:
 * 9200: Elasticsearch HTTP
 * 9300: Elasticsearch TCP transport
