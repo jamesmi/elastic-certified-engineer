@@ -37,3 +37,77 @@ PUT hamlet/_doc/_bulk
 # Assign the role `bernardo_role` to the `bernardo` user
 # Login using the `bernardo` user credentials, and run some queries on `hamlet` to verify that the role privileges were correctly set
 # Change the password of the `bernardo` user to "poor-bernardo"
+
+# LAB STEPS
+
+Configuration in Node1, Node2 and Node3
+
+xpack.security.enabled: true
+xpack.security.transport.ssl.enabled: true
+xpack.security.transport.ssl.verification_mode: certificate 
+xpack.security.transport.ssl.keystore.path: certs/elastic-certificates.p12 
+xpack.security.transport.ssl.truststore.path: certs/elastic-certificates.p12 
+
+bin/elasticsearch-certutil ca
+(password:elastic)
+bin/elasticsearch-certutil cert --ca elastic-stack-ca.p12
+(password:elasticsearch)
+
+Copy file to all three nodes:
+mkdir /etc/elasticsearch/certs
+scp elastic-certificates.p12 node2:/etc/elasticsearch/certs/elastic-certificates.p12
+chmod 660 /etc/elasticsearch/certs/elastic-certificates.p12
+
+bin/elasticsearch-keystore add xpack.security.transport.ssl.keystore.secure_password
+bin/elasticsearch-keystore add xpack.security.transport.ssl.truststore.secure_password
+(password:elasticsearch)
+
+Copy keystore file to all three nodes:
+scp /etc/elasticsearch/elasticsearch.keystore node2:/etc/elasticsearch/elasticsearch.keystore
+
+systemctl start elasticsearch
+
+/usr/share/elasticsearch/bin/elasticsearch-setup-passwords 
+
+Kibana.yml:
+
+elasticsearch.username: "elastic"
+elasticsearch.password: "elastic"
+
+systemctl start kibana
+
+Check status:
+
+[root@esnode02 elasticsearch]# curl -uelastic:elastic http://10.0.0.12:9201/_cat/health  
+1584284599 15:03:19 eoc-01-cluster green 3 3 6 3 0 0 0 0 - 100.0%
+[root@esnode02 elasticsearch]# curl -uelastic:elastic http://10.0.0.12:9201/_cat/nodes
+10.0.0.13 10 92 2 0.08 0.03 0.08 mdi * node2
+10.0.0.12 10 93 2 0.01 0.02 0.06 md  - node1
+10.0.0.14 11 93 2 0.00 0.01 0.07 mdi - node3
+[root@esnode02 elasticsearch]# curl -uelastic:elastic http://10.0.0.12:9201
+{
+  "name" : "node1",
+  "cluster_name" : "eoc-01-cluster",
+  "cluster_uuid" : "srSVldxgR-yln4CcgFHYEg",
+  "version" : {
+    "number" : "7.2.1",
+    "build_flavor" : "default",
+    "build_type" : "rpm",
+    "build_hash" : "fe6cb20",
+    "build_date" : "2019-07-24T17:58:29.979462Z",
+    "build_snapshot" : false,
+    "lucene_version" : "8.0.0",
+    "minimum_wire_compatibility_version" : "6.8.0",
+    "minimum_index_compatibility_version" : "6.0.0-beta1"
+  },
+  "tagline" : "You Know, for Search"
+}
+[root@esnode02 elasticsearch]# 
+
+
+
+
+References:
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/configuring-security.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/security-settings.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/configuring-tls.html
