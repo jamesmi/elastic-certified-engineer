@@ -33,7 +33,7 @@ cluster.initial_master_nodes: ["node1"]
 logger.org.elasticsearch.transport: debug
 action.destructive_requires_name: true
 path.data: /var/lib/elasticsearch
-path.logs: /var/log/elasticsearch
+path.logs: /var/log/es
 
 Configuration in node2:
 
@@ -51,7 +51,7 @@ cluster.initial_master_nodes: ["node1"]
 logger.org.elasticsearch.transport: debug
 action.destructive_requires_name: true
 path.data: /var/lib/elasticsearch
-path.logs: /var/log/elasticsearch
+path.logs: /var/log/es
 
 Configuration in node3:
 
@@ -69,8 +69,10 @@ cluster.initial_master_nodes: ["node1"]
 logger.org.elasticsearch.transport: debug
 action.destructive_requires_name: true
 path.data: /var/lib/elasticsearch
-path.logs: /var/log/elasticsearch
+path.logs: /var/log/es
 
-
+Note:
+Please execute below command as root user to avoid permission issue in log directory.
+cp -rpf /var/log/elasticsearch /var/log/es
 
 References:
