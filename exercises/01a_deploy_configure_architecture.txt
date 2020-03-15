@@ -75,4 +75,7 @@ Note:
 Please execute below command as root user to avoid permission issue in log directory.
 cp -rpf /var/log/elasticsearch /var/log/es
 
+Check:
+curl -XGET "http://10.0.0.12:9201/_cluster/settings?include_defaults"
+
 References:
