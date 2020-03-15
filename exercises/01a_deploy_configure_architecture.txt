@@ -1,0 +1,76 @@
+# ** EXAM OBJECTIVE: INSTALLATION AND CONFIGURATION **
+# GOAL: Deploy an Elasticsearch cluster that satisfies a given set of requirements
+# REQUIRED SETUP: /
+# Download the the exam version of Elasticsearch
+# Deploy the cluster `eoc-01-cluster`, so that it satisfies the following requirements: (i) has three nodes, named `node1`, `node2`, and `node3`, (ii) all nodes are eligible master nodes
+# Bind `node1` to the IP address “151.101.2.217” and port “9201”
+# Bind `node2` to the IP address “151.101.2.218” and port “9202”
+# Bind `node3` to the IP address “151.101.2.219” and port “9203”
+# Configure the cluster discovery module of `node2` and `node3` so as to use `node1` as seed host
+# Configure the nodes to avoid the split brain scenario
+# Configure `node1` to be a data node but not an ingest node
+# Configure `node2` and `node3` to be both an ingest and data node
+# Configure `node1` to disallow swapping on its host
+# Configure the JVM settings of each node so that it uses a minimum and maximum of 8 GB for the heap
+# Configure the logging settings of each node so that (i) the logs directory is not the default one, (ii) the log level for transport-related events is set to "debug"
+# Configure the nodes so as to disable the possibility to delete indices using wildcards
+
+# ** LAB STEPS ADDED BY JAMES ** 
+
+Configuration in node1:
+
+cluster.name: eoc-01-cluster
+node.name: node1
+node.master: true
+node.data: true
+node.ingest: false 
+node.ml: false 
+network.host: 10.0.0.12
+http.port: 9201
+cluster.remote.connect: false
+discovery.seed_hosts: ["esnode01", "esnode02", "esnode03"]
+cluster.initial_master_nodes: ["node1"]
+logger.org.elasticsearch.transport: debug
+action.destructive_requires_name: true
+path.data: /var/lib/elasticsearch
+path.logs: /var/log/elasticsearch
+
+Configuration in node2:
+
+cluster.name: eoc-01-cluster
+node.name: node2
+node.master: true
+node.data: true
+node.ingest: false 
+node.ml: false 
+network.host: 10.0.0.13
+http.port: 9202
+cluster.remote.connect: false
+discovery.seed_hosts: ["esnode01", "esnode02", "esnode03"]
+cluster.initial_master_nodes: ["node1"]
+logger.org.elasticsearch.transport: debug
+action.destructive_requires_name: true
+path.data: /var/lib/elasticsearch
+path.logs: /var/log/elasticsearch
+
+Configuration in node3:
+
+cluster.name: eoc-01-cluster
+node.name: node3
+node.master: true
+node.data: true
+node.ingest: false 
+node.ml: false 
+network.host: 10.0.0.14
+http.port: 9203
+cluster.remote.connect: false
+discovery.seed_hosts: ["esnode01", "esnode02", "esnode03"]
+cluster.initial_master_nodes: ["node1"]
+logger.org.elasticsearch.transport: debug
+action.destructive_requires_name: true
+path.data: /var/lib/elasticsearch
+path.logs: /var/log/elasticsearch
+
+
+
+References:
