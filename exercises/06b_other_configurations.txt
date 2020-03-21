@@ -44,3 +44,190 @@ GET /original:hamlet,hamlet-pirate/_search
     }
   }
 }
+
+
+
+# LAB STEPS
+
+# configuration in node1
+cluster.name: eoc-06-original-cluster
+node.name: node-1
+node.master: true
+node.data: true
+node.ingest: true 
+node.ml: false 
+network.host: 10.0.0.17
+http.port: 9200
+discovery.seed_hosts: ["c2-esnode01"]
+cluster.initial_master_nodes: ["node-1"]
+cluster.remote.connect: false
+path.data: /var/lib/elasticsearch
+path.logs: /var/log/elasticsearch
+
+# create hamlet index on node1
+
+PUT hamlet/_doc/_bulk
+{"index":{"_index":"hamlet","_id":0}}
+{"line_number":"1","speaker":"BERNARDO","text_entry":"Whos there?"}
+{"index":{"_index":"hamlet","_id":1}}
+{"line_number":"2","speaker":"FRANCISCO","text_entry":"Nay, answer me: stand, and unfold yourself."}
+{"index":{"_index":"hamlet","_id":2}}
+{"line_number":"3","speaker":"BERNARDO","text_entry":"Long live the king!"}
+{"index":{"_index":"hamlet","_id":3}}
+{"line_number":"4","speaker":"FRANCISCO","text_entry":"Bernardo?"}
+{"index":{"_index":"hamlet","_id":4}}
+{"line_number":"5","speaker":"BERNARDO","text_entry":"He."}
+
+curl -XPUT "http://10.0.0.17:9200/hamlet/_doc/_bulk" -H 'Content-Type: application/json' -d'{"index":{"_index":"hamlet","_id":0}}
+{"line_number":"1","speaker":"BERNARDO","text_entry":"Whos there?"}
+{"index":{"_index":"hamlet","_id":1}}
+{"line_number":"2","speaker":"FRANCISCO","text_entry":"Nay, answer me: stand, and unfold yourself."}
+{"index":{"_index":"hamlet","_id":2}}
+{"line_number":"3","speaker":"BERNARDO","text_entry":"Long live the king!"}
+{"index":{"_index":"hamlet","_id":3}}
+{"line_number":"4","speaker":"FRANCISCO","text_entry":"Bernardo?"}
+{"index":{"_index":"hamlet","_id":4}}
+{"line_number":"5","speaker":"BERNARDO","text_entry":"He."}
+'
+
+# create repository 
+
+mkdir -p /glenacota/elastic/repo
+mkdir -p /glenacota/repo        
+chmod -R 777  /glenacota/
+
+added below config to elasticsearch.yml then restart elasticsearch
+path.repo: ["/glenacota/elastic/repo", "/glenacota/repo"]
+
+curl -X PUT "10.0.0.17:9200/_snapshot/hamlet_backup?pretty" -H 'Content-Type: application/json' -d'
+{
+    "type": "fs",
+    "settings": {
+        "location": "/glenacota/elastic/repo"
+    }
+}
+'
+
+PUT /_snapshot/hamlet_backup
+{
+  "type": "fs",
+  "settings": {
+    "location": "/glenacota/elastic/repo"
+  }
+}
+
+# create snapshot
+curl -X PUT "10.0.0.17:9200/_snapshot/hamlet_backup/hamlet_snapshot_1?wait_for_completion=true&pretty" -H 'Content-Type: application/json' -d'
+{
+  "indices": "hamlet",
+  "ignore_unavailable": true,
+  "include_global_state": false
+}
+'
+
+{
+  "snapshot" : {
+    "snapshot" : "hamlet_snapshot_1",
+    "uuid" : "4MqBODTIS9OXySgLz9bQWQ",
+    "version_id" : 7020199,
+    "version" : "7.2.1",
+    "indices" : [
+      "hamlet"
+    ],
+    "include_global_state" : false,
+    "state" : "SUCCESS",
+    "start_time" : "2020-03-21T15:31:22.706Z",
+    "start_time_in_millis" : 1584804682706,
+    "end_time" : "2020-03-21T15:31:22.773Z",
+    "end_time_in_millis" : 1584804682773,
+    "duration_in_millis" : 67,
+    "failures" : [ ],
+    "shards" : {
+      "total" : 1,
+      "failed" : 0,
+      "successful" : 1
+    }
+  }
+}
+
+# delete index
+curl -X DELETE "10.0.0.17:9200/hamlet"
+curl http://10.0.0.17:9200/hamlet?pretty
+
+
+[root@c2-esnode01 elasticsearch]# curl http://10.0.0.17:9200/_snapshot/hamlet_backup?pretty
+{
+  "hamlet_backup" : {
+    "type" : "fs",
+    "settings" : {
+      "location" : "/glenacota/elastic/repo"
+    }
+  }
+}
+[root@c2-esnode01 elasticsearch]# curl http://10.0.0.17:9200/_snapshot/hamlet_backup/_all?pretty
+{
+  "snapshots" : [
+    {
+      "snapshot" : "hamlet_snapshot_1",
+      "uuid" : "4MqBODTIS9OXySgLz9bQWQ",
+      "version_id" : 7020199,
+      "version" : "7.2.1",
+      "indices" : [
+        "hamlet"
+      ],
+      "include_global_state" : false,
+      "state" : "SUCCESS",
+      "start_time" : "2020-03-21T15:31:22.706Z",
+      "start_time_in_millis" : 1584804682706,
+      "end_time" : "2020-03-21T15:31:22.773Z",
+      "end_time_in_millis" : 1584804682773,
+      "duration_in_millis" : 67,
+      "failures" : [ ],
+      "shards" : {
+        "total" : 1,
+        "failed" : 0,
+        "successful" : 1
+      }
+    }
+  ]
+}
+[root@c2-esnode01 elasticsearch]# 
+
+# restore index
+curl -X POST "10.0.0.17:9200/_snapshot/hamlet_backup/hamlet_snapshot_1/_restore?pretty"
+curl http://10.0.0.17:9200/hamlet?pretty 
+
+
+# configuration in node2
+cluster.name: eoc-06-adaptation-cluster 
+node.name: node-2
+node.master: true
+node.data: true
+node.ingest: true
+node.ml: false 
+network.host: 10.0.0.18
+http.port: 9200
+discovery.seed_hosts: ["c2-esnode02"]
+cluster.initial_master_nodes: ["node-2"]
+cluster.remote.connect: false
+path.data: /var/lib/elasticsearch
+path.logs: /var/log/elasticsearch
+
+# create index
+curl -XPUT "http://10.0.0.18:9200/hamlet/_doc/_bulk" -H 'Content-Type: application/json' -d'
+{"index":{"_index":"hamlet-pirate","_id":5}}
+{"line_number":"6","speaker":"FRANCISCO","text_entry":"Ahoy Matey! Ye come most carefully upon yer hour."}
+{"index":{"_index":"hamlet-pirate","_id":6}}
+{"line_number":"7","speaker":"BERNARDO","text_entry":"Aye! Tis now struck twelve; get ye to bed, Francisco."}
+{"index":{"_index":"hamlet-pirate","_id":7}}
+{"line_number":"8","speaker":"FRANCISCO","text_entry":"For this relief much thanks, son of a biscuit eater"}
+{"index":{"_index":"hamlet-pirate","_id":8}}
+{"line_number":"9","speaker":"BERNARDO","text_entry":"Arrrrrrrrh!"}
+'
+
+
+
+
+# reference 
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/modules-snapshots.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/modules-cross-cluster-search.html
