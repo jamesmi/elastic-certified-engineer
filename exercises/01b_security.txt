@@ -172,7 +172,8 @@ POST /_security/role/francisco_role
   "indices": [
     {
       "names": [ "hamlet" ],
-      "privileges": ["all"]
+      "privileges": ["all"],
+      
     }
   ]
 }
@@ -191,10 +192,6 @@ POST /_security/user/francisco
   "full_name" : "francisco",
   "email" : "francisco@example.com"
   }
-}
-
-{
-  "created" : true
 }
 
 
@@ -223,9 +220,103 @@ if you login from Kibana then you will get below error due to this role does not
 {"statusCode":403,"error":"Forbidden","message":"Forbidden"}
 
 
+# create role bernardo_role
+POST /_security/role/bernardo_role
+{
+  "cluster": ["monitor"], 
+  "indices": [
+    {
+      "names": [ "hamlet" ],
+      "privileges": [ "read" ],
+      "query": "{\"match\": {\"speaker\": \"BERNARDO\"}}",
+      "field_security" : {
+        "grant" : [ "text_entry" ]
+      }
+    }
+  ]
+}
+
+you will get security_exception so please active your trial license then execute above command.
+
+
+# create user
+POST /_security/user/bernardo
+{
+  "password" : "bernardo-password",
+  "roles" : [ "bernardo_role" ],
+  "full_name" : "bernardo",
+  "email" : "bernardo@example.com"
+  }
+}
+
+# login and check the query result
+[root@esnode01 ~]# curl -XGET -u francisco:francisco-password http://10.0.0.12:9201/hamlet/_doc/0?pretty
+{
+  "_index" : "hamlet",
+  "_type" : "_doc",
+  "_id" : "0",
+  "_version" : 1,
+  "_seq_no" : 0,
+  "_primary_term" : 1,
+  "found" : true,
+  "_source" : {
+    "line_number" : "1",
+    "speaker" : "BERNARDO",
+    "text_entry" : "Whos there?"
+  }
+}
+[root@esnode01 ~]# curl -XGET -u francisco:francisco-password http://10.0.0.12:9201/hamlet/_doc/1?pretty
+{
+  "_index" : "hamlet",
+  "_type" : "_doc",
+  "_id" : "1",
+  "_version" : 1,
+  "_seq_no" : 1,
+  "_primary_term" : 1,
+  "found" : true,
+  "_source" : {
+    "line_number" : "2",
+    "speaker" : "FRANCISCO",
+    "text_entry" : "Nay, answer me: stand, and unfold yourself."
+  }
+}
+[root@esnode01 ~]# curl -XGET -u bernardo:bernardo-password http://10.0.0.12:9201/hamlet/_doc/0?pretty  
+{
+  "_index" : "hamlet",
+  "_type" : "_doc",
+  "_id" : "0",
+  "_version" : 1,
+  "_seq_no" : 0,
+  "_primary_term" : 1,
+  "found" : true,
+  "_source" : {
+    "text_entry" : "Whos there?"
+  }
+}
+[root@esnode01 ~]# curl -XGET -u bernardo:bernardo-password http://10.0.0.12:9201/hamlet/_doc/1?pretty
+{
+  "_index" : "hamlet",
+  "_type" : "_doc",
+  "_id" : "1",
+  "found" : false
+}
+[root@esnode01 ~]# 
+
+# change password
+POST /_security/user/bernardo/_password
+{
+  "password" : "poor-bernardo"
+}
+
+
+
+
 References:
 https://www.elastic.co/guide/en/elasticsearch/reference/7.2/configuring-security.html
 https://www.elastic.co/guide/en/elasticsearch/reference/7.2/security-settings.html
 https://www.elastic.co/guide/en/elasticsearch/reference/7.2/configuring-tls.html
 https://www.elastic.co/guide/en/elasticsearch/reference/7.2/get-started-roles.html
 https://www.elastic.co/guide/en/elasticsearch/reference/7.2/security-api-put-role.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/document-level-security.html  
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/field-and-document-access-control.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/security-api-change-password.html
