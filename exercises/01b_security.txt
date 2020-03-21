@@ -320,3 +320,4 @@ https://www.elastic.co/guide/en/elasticsearch/reference/7.2/security-api-put-rol
 https://www.elastic.co/guide/en/elasticsearch/reference/7.2/document-level-security.html  
 https://www.elastic.co/guide/en/elasticsearch/reference/7.2/field-and-document-access-control.html
 https://www.elastic.co/guide/en/elasticsearch/reference/7.2/security-api-change-password.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/defining-roles.html
