@@ -106,6 +106,71 @@ Check status:
 
 
 
+# Check index hamlet
+
+dev_tools> HEAD hamlet
+404 - Not Found
+
+
+[root@esnode01 ~]# curl -u elastic:elastic http://10.0.0.12:9201/hamlet?pretty
+{
+  "error" : {
+    "root_cause" : [
+      {
+        "type" : "index_not_found_exception",
+        "reason" : "no such index [hamlet]",
+        "index_uuid" : "_na_",
+        "resource.type" : "index_or_alias",
+        "resource.id" : "hamlet",
+        "index" : "hamlet"
+      }
+    ],
+    "type" : "index_not_found_exception",
+    "reason" : "no such index [hamlet]",
+    "index_uuid" : "_na_",
+    "resource.type" : "index_or_alias",
+    "resource.id" : "hamlet",
+    "index" : "hamlet"
+  },
+  "status" : 404
+}
+[root@esnode01 ~]#
+
+
+# Create index hamlet
+PUT hamlet/_doc/_bulk
+{"index":{"_index":"hamlet","_id":0}}
+{"line_number":"1","speaker":"BERNARDO","text_entry":"Whos there?"}
+{"index":{"_index":"hamlet","_id":1}}
+{"line_number":"2","speaker":"FRANCISCO","text_entry":"Nay, answer me: stand, and unfold yourself."}
+{"index":{"_index":"hamlet","_id":2}}
+{"line_number":"3","speaker":"BERNARDO","text_entry":"Long live the king!"}
+{"index":{"_index":"hamlet","_id":3}}
+{"line_number":"4","speaker":"FRANCISCO","text_entry":"Bernardo?"}
+{"index":{"_index":"hamlet","_id":4}}
+{"line_number":"5","speaker":"BERNARDO","text_entry":"He."}
+{"index":{"_index":"hamlet","_id":5}}
+{"line_number":"6","speaker":"FRANCISCO","text_entry":"You come most carefully upon your hour."}
+{"index":{"_index":"hamlet","_id":6}}
+{"line_number":"7","speaker":"BERNARDO","text_entry":"Tis now struck twelve; get thee to bed, Francisco."}
+{"index":{"_index":"hamlet","_id":7}}
+{"line_number":"8","speaker":"FRANCISCO","text_entry":"For this relief much thanks: tis bitter cold,"}
+{"index":{"_index":"hamlet","_id":8}}
+{"line_number":"9","speaker":"FRANCISCO","text_entry":"And I am sick at heart."}
+{"index":{"_index":"hamlet","_id":9}}
+{"line_number":"10","speaker":"BERNARDO","text_entry":"Have you had quiet guard?"}
+
+# check index again
+dev_tools> HEAD hamlet
+200 - OK
+
+
+
+
+
+
+
+
 
 References:
 https://www.elastic.co/guide/en/elasticsearch/reference/7.2/configuring-security.html
