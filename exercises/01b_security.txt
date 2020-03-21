@@ -165,14 +165,67 @@ dev_tools> HEAD hamlet
 200 - OK
 
 
+# create role francisco_role
+POST /_security/role/francisco_role
+{
+  "cluster": ["monitor"],
+  "indices": [
+    {
+      "names": [ "hamlet" ],
+      "privileges": ["all"]
+    }
+  ]
+}
+
+{
+  "role" : {
+    "created" : true
+  }
+}
+
+# create user
+POST /_security/user/francisco
+{
+  "password" : "francisco-password",
+  "roles" : [ "francisco_role" ],
+  "full_name" : "francisco",
+  "email" : "francisco@example.com"
+  }
+}
+
+{
+  "created" : true
+}
 
 
+[root@esnode01 ~]# curl -XGET -u francisco:francisco-password http://10.0.0.12:9201/hamlet/_doc/0?pretty
+{
+  "_index" : "hamlet",
+  "_type" : "_doc",
+  "_id" : "0",
+  "_version" : 1,
+  "_seq_no" : 0,
+  "_primary_term" : 1,
+  "found" : true,
+  "_source" : {
+    "line_number" : "1",
+    "speaker" : "BERNARDO",
+    "text_entry" : "Whos there?"
+  }
+}
+[root@esnode01 ~]#
 
 
+dev_tools> HEAD /hamlet/_doc/0
+200 - OK
 
+if you login from Kibana then you will get below error due to this role does not grant access to Kibana
+{"statusCode":403,"error":"Forbidden","message":"Forbidden"}
 
 
 References:
 https://www.elastic.co/guide/en/elasticsearch/reference/7.2/configuring-security.html
 https://www.elastic.co/guide/en/elasticsearch/reference/7.2/security-settings.html
 https://www.elastic.co/guide/en/elasticsearch/reference/7.2/configuring-tls.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/get-started-roles.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/security-api-put-role.html
