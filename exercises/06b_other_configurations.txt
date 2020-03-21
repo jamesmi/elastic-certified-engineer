@@ -227,6 +227,117 @@ curl -XPUT "http://10.0.0.18:9200/hamlet/_doc/_bulk" -H 'Content-Type: applicati
 
 
 
+curl -XPUT "http://10.0.0.18:9200/_cluster/settings" -H 'Content-Type: application/json' -d' 
+{
+  "persistent": {
+    "cluster": {
+      "remote": {
+        "original": {
+          "seeds": [
+            "10.0.0.17:9300"
+          ]
+        }
+      }
+    }
+  }
+}
+'
+
+please ensure 'cluster.remote.connect: true' is in elasticsearch.yml and restart elastisearch.
+
+[root@c2-esnode02 elasticsearch]# curl -XGET "http://10.0.0.18:9200/original:hamlet,hamlet-pirate/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "match": {
+      "speaker": "BERNARDO"
+    }
+  }
+}
+'
+{
+  "took" : 151,
+  "timed_out" : false,
+  "num_reduce_phases" : 3,
+  "_shards" : {
+    "total" : 2,
+    "successful" : 2,
+    "skipped" : 0,
+    "failed" : 0
+  },
+  "_clusters" : {
+    "total" : 2,
+    "successful" : 2,
+    "skipped" : 0
+  },
+  "hits" : {
+    "total" : {
+      "value" : 5,
+      "relation" : "eq"
+    },
+    "max_score" : 0.6931472,
+    "hits" : [
+      {
+        "_index" : "hamlet-pirate",
+        "_type" : "_doc",
+        "_id" : "6",
+        "_score" : 0.6931472,
+        "_source" : {
+          "line_number" : "7",
+          "speaker" : "BERNARDO",
+          "text_entry" : "Aye! Tis now struck twelve; get ye to bed, Francisco."
+        }
+      },
+      {
+        "_index" : "hamlet-pirate",
+        "_type" : "_doc",
+        "_id" : "8",
+        "_score" : 0.6931472,
+        "_source" : {
+          "line_number" : "9",
+          "speaker" : "BERNARDO",
+          "text_entry" : "Arrrrrrrrh!"
+        }
+      },
+      {
+        "_index" : "original:hamlet",
+        "_type" : "_doc",
+        "_id" : "0",
+        "_score" : 0.5389965,
+        "_source" : {
+          "line_number" : "1",
+          "speaker" : "BERNARDO",
+          "text_entry" : "Whos there?"
+        }
+      },
+      {
+        "_index" : "original:hamlet",
+        "_type" : "_doc",
+        "_id" : "2",
+        "_score" : 0.5389965,
+        "_source" : {
+          "line_number" : "3",
+          "speaker" : "BERNARDO",
+          "text_entry" : "Long live the king!"
+        }
+      },
+      {
+        "_index" : "original:hamlet",
+        "_type" : "_doc",
+        "_id" : "4",
+        "_score" : 0.5389965,
+        "_source" : {
+          "line_number" : "5",
+          "speaker" : "BERNARDO",
+          "text_entry" : "He."
+        }
+      }
+    ]
+  }
+}
+[root@c2-esnode02 elasticsearch]#
+
+
+
 
 # reference 
 https://www.elastic.co/guide/en/elasticsearch/reference/7.2/modules-snapshots.html
