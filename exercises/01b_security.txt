@@ -178,11 +178,7 @@ POST /_security/role/francisco_role
   ]
 }
 
-{
-  "role" : {
-    "created" : true
-  }
-}
+
 
 # create user
 POST /_security/user/francisco
@@ -228,10 +224,10 @@ POST /_security/role/bernardo_role
     {
       "names": [ "hamlet" ],
       "privileges": [ "read" ],
-      "query": "{\"match\": {\"speaker\": \"BERNARDO\"}}",
       "field_security" : {
         "grant" : [ "text_entry" ]
-      }
+      },
+      "query": "{\"match\": {\"speaker\": \"BERNARDO\"}}"
     }
   ]
 }
