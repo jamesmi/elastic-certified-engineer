@@ -52,9 +52,83 @@ PUT hamlet-2/_doc/_bulk
 # Configure the `hamlet-2` index to allocate its shards only to nodes with a large storage size
 # Verify the success of the last action by using the _cat API
 
+# LAB STEPS
+PUT /hamlet-1
+{
+    "settings" : {
+        "index" : {
+            "number_of_shards" : 2, 
+            "number_of_replicas" : 1 
+        }
+    }
+}
+GET hamlet-1/_settings  
+
+PUT hamlet-1/_doc/_bulk
+{"index":{"_index":"hamlet-1","_id":0}}  
+{"line_number":"1","speaker":"BERNARDO","text_entry":"Whos there?"}
+{"index":{"_index":"hamlet-1","_id":1}} 
+{"line_number":"2","speaker":"FRANCISCO","text_entry":"Nay, answer me: stand, and unfold yourself."}
+{"index":{"_index":"hamlet-1","_id":2}}
+{"line_number":"3","speaker":"BERNARDO","text_entry":"Long live the king!"}
+{"index":{"_index":"hamlet-1","_id":3}}
+{"line_number":"4","speaker":"FRANCISCO","text_entry":"Bernardo?"}
+{"index":{"_index":"hamlet-1","_id":4}}
+{"line_number":"5","speaker":"BERNARDO","text_entry":"He."}
+
+
+GET _cat/shards?v
+
+GET _cat/shards/hamlet-*?v
+
+index    shard prirep state   docs store ip        node
+hamlet-1 1     p      STARTED    0  230b 10.0.0.14 node3
+hamlet-1 1     r      STARTED    0  230b 10.0.0.12 node1
+hamlet-1 0     r      STARTED    0  230b 10.0.0.13 node2
+hamlet-1 0     p      STARTED    0  230b 10.0.0.12 node1
+
+
+GET /_shard_stores?status=green
+
+PUT /hamlet-2
+{
+    "settings" : {
+        "index" : {
+            "number_of_shards" : 2, 
+            "number_of_replicas" : 1 
+        }
+    }
+}
+
+PUT hamlet-2/_doc/_bulk
+{"index":{"_index":"hamlet-2","_id":5}}
+{"line_number":"6","speaker":"FRANCISCO","text_entry":"You come most carefully upon your hour."}
+{"index":{"_index":"hamlet-2","_id":6}}
+{"line_number":"7","speaker":"BERNARDO","text_entry":"Tis now struck twelve; get thee to bed, Francisco."}
+{"index":{"_index":"hamlet-2","_id":7}}
+{"line_number":"8","speaker":"FRANCISCO","text_entry":"For this relief much thanks: tis bitter cold,"}
+{"index":{"_index":"hamlet-2","_id":8}}
+{"line_number":"9","speaker":"FRANCISCO","text_entry":"And I am sick at heart."}
+{"index":{"_index":"hamlet-2","_id":9}}
+{"line_number":"10","speaker":"BERNARDO","text_entry":"Have you had quiet guard?"}
+
+GET _cat/shards/hamlet-*?v
+
+index    shard prirep state   docs store ip        node
+hamlet-1 1     p      STARTED    2 4.8kb 10.0.0.14 node3
+hamlet-1 1     r      STARTED    2 4.8kb 10.0.0.12 node1
+hamlet-1 0     r      STARTED    3 5.2kb 10.0.0.13 node2
+hamlet-1 0     p      STARTED    3 5.2kb 10.0.0.12 node1
+hamlet-2 1     p      STARTED    1 4.7kb 10.0.0.13 node2
+hamlet-2 1     r      STARTED    1 4.7kb 10.0.0.12 node1
+hamlet-2 0     p      STARTED    4 5.6kb 10.0.0.14 node3
+hamlet-2 0     r      STARTED    4 5.6kb 10.0.0.13 node2
+
 
 
 
 
 # Reference
 https://www.elastic.co/guide/en/elasticsearch/reference/7.2/index-modules-allocation.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/modules-cluster.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-create-index.html
