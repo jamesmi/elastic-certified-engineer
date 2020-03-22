@@ -126,6 +126,93 @@ hamlet-2 0     r      STARTED    4 5.6kb 10.0.0.13 node2
 
 
 
+# allocate primary shards to node2
+
+GET _cat/shards/hamlet-1?v
+
+index    shard prirep state   docs store ip        node
+hamlet-1 1     p      STARTED    2 4.8kb 10.0.0.13 node2
+hamlet-1 1     r      STARTED    2 4.8kb 10.0.0.12 node1
+hamlet-1 0     p      STARTED    3 5.2kb 10.0.0.14 node3
+hamlet-1 0     r      STARTED    3 5.2kb 10.0.0.13 node2
+
+POST /_cluster/reroute
+{
+    "commands" : [
+      {
+          "cancel": {
+                "index" : "hamlet-1", "shard" : 0,
+                "node" : "node2"
+          }
+        },
+        {
+            "move" : {
+                "index" : "hamlet-1", "shard" : 0,
+                "from_node" : "node3", "to_node" : "node2"
+            }
+        }
+        
+    ]
+}
+
+
+GET _cat/shards/hamlet-1?v
+index    shard prirep state   docs store ip        node
+hamlet-1 1     p      STARTED    2 4.7kb 10.0.0.13 node2
+hamlet-1 1     r      STARTED    2 4.7kb 10.0.0.12 node1
+hamlet-1 0     p      STARTED    3 5.2kb 10.0.0.13 node2
+hamlet-1 0     r      STARTED    3 5.2kb 10.0.0.12 node1
+
+# no primary shards on node3
+
+GET _cat/shards/hamlet-2?v
+index    shard prirep state   docs store ip        node
+hamlet-2 1     p      STARTED    1 4.7kb 10.0.0.13 node2
+hamlet-2 1     r      STARTED    1 4.7kb 10.0.0.12 node1
+hamlet-2 0     p      STARTED    4 5.6kb 10.0.0.14 node3
+hamlet-2 0     r      STARTED    4 5.6kb 10.0.0.13 node2
+
+POST /_cluster/reroute
+{
+    "commands" : [
+      {
+            "move" : {
+                "index" : "hamlet-2", "shard" : 0,
+                "from_node" : "node3", "to_node" : "node1"
+            }
+        }
+    ]
+}
+
+GET _cat/shards/hamlet-2?v
+index    shard prirep state   docs store ip        node
+hamlet-2 1     p      STARTED    1 4.8kb 10.0.0.14 node3
+hamlet-2 1     r      STARTED    1 4.7kb 10.0.0.12 node1
+hamlet-2 0     r      STARTED    4 5.6kb 10.0.0.13 node2
+hamlet-2 0     p      STARTED    4 5.7kb 10.0.0.12 node1
+
+POST /_cluster/reroute
+{
+    "commands" : [
+      {
+            "move" : {
+                "index" : "hamlet-2", "shard" : 1,
+                "from_node" : "node3", "to_node" : "node2"
+            }
+        }
+    ]
+}
+
+GET _cat/shards/hamlet-2?v
+index    shard prirep state   docs store ip        node
+hamlet-2 1     p      STARTED    1 4.8kb 10.0.0.13 node2
+hamlet-2 1     r      STARTED    1 4.7kb 10.0.0.12 node1
+hamlet-2 0     r      STARTED    4 5.7kb 10.0.0.14 node3
+hamlet-2 0     p      STARTED    4 5.7kb 10.0.0.12 node1
+
+
+# remove allocation filter setting
+
 
 
 # Reference
