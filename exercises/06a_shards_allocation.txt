@@ -51,3 +51,10 @@ PUT hamlet-2/_doc/_bulk
 # Let's assume that the nodes have either a "large" or "small" local storage. Add the attribute `storage` to the nodes configuration, and set its value so that `node2` is the only with a "small" storage
 # Configure the `hamlet-2` index to allocate its shards only to nodes with a large storage size
 # Verify the success of the last action by using the _cat API
+
+
+
+
+
+# Reference
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/index-modules-allocation.html
