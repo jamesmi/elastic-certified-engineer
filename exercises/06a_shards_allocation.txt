@@ -219,3 +219,4 @@ hamlet-2 0     p      STARTED    4 5.7kb 10.0.0.12 node1
 https://www.elastic.co/guide/en/elasticsearch/reference/7.2/index-modules-allocation.html
 https://www.elastic.co/guide/en/elasticsearch/reference/7.2/modules-cluster.html
 https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-create-index.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.6/cluster-reroute.html
