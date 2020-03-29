@@ -300,6 +300,92 @@ GET /_cluster/settings
   "transient" : { }
 }
 
+PUT /_cluster/settings
+{
+    "persistent" : {
+        "cluster.routing.allocation.awareness.attributes": null,
+        "cluster.routing.allocation.awareness.force.az.values": null
+    }
+}
+
+
+# Configure the cluster to reflect a hot/warm architecture, with `node1` as the only hot node
+add below config to elasticsearch.yml
+node1:
+node.attr.hot_warm_type: hot
+
+node2,node3
+node.attr.hot_warm_type: warm
+
+GET /_cat/nodeattrs?v
+node  host      ip        attr            value
+node2 10.0.0.13 10.0.0.13 az              earth
+node2 10.0.0.13 10.0.0.13 hot_warm_type   warm
+node2 10.0.0.13 10.0.0.13 xpack.installed true
+node1 10.0.0.12 10.0.0.12 az              earth
+node1 10.0.0.12 10.0.0.12 hot_warm_type   hot
+node1 10.0.0.12 10.0.0.12 xpack.installed true
+node3 10.0.0.14 10.0.0.14 az              mars
+node3 10.0.0.14 10.0.0.14 hot_warm_type   warm
+node3 10.0.0.14 10.0.0.14 xpack.installed true
+
+DELETE hamlet-1
+PUT hamlet-1
+{
+  "settings": {
+    "index.routing.allocation.include.hot_warm_type": "warm"
+  }
+}
+
+GET _cat/shards/hamlet-1?v
+index    shard prirep state   docs store ip        node
+hamlet-1 0     p      STARTED    0  230b 10.0.0.14 node3
+hamlet-1 0     r      STARTED    0  230b 10.0.0.13 node2
+
+GET /hamlet-1/_settings
+
+
+PUT hamlet-1/_settings
+{
+  "settings": {
+    "index.routing.allocation.include.hot_warm_type": null
+  }
+}
+
+
+# Let's assume that the nodes have either a "large" or "small" local storage. Add the attribute `storage` to the nodes configuration, and set its value so that `node2` is the only with a "small" storage
+
+add below config to elasticsearch.yml
+node1,node3:
+node.attr.storage: large
+
+node2:
+node.attr.storage: small
+
+GET _cat/nodeattrs?v
+node  host      ip        attr            value
+node2 10.0.0.13 10.0.0.13 xpack.installed true
+node2 10.0.0.13 10.0.0.13 storage         small
+node1 10.0.0.12 10.0.0.12 xpack.installed true
+node1 10.0.0.12 10.0.0.12 storage         large
+node3 10.0.0.14 10.0.0.14 xpack.installed true
+node3 10.0.0.14 10.0.0.14 storage         large
+
+
+
+PUT hamlet-2
+{
+  "settings": {
+    "index.routing.allocation.include.storage": "large"
+  }
+}
+
+GET _cat/shards/hamlet-2?v
+index    shard prirep state   docs store ip        node
+hamlet-2 0     r      STARTED    5 5.8kb 10.0.0.14 node3
+hamlet-2 0     p      STARTED    5 5.8kb 10.0.0.12 node1
+
+GET hamlet-2/_settings
 
 
 
