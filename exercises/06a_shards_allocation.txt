@@ -241,6 +241,67 @@ GET /hamlet-1/_settings
   }
 }
 
+# Configure the cluster to force shard allocation awareness based on the two availability zones, and persist such configuration across cluster restarts
+
+add below config to elasticsearch.yml
+node1, node2:
+node.attr.az: earth
+
+node3:
+node.attr.az: mars
+
+GET /_cat/nodeattrs?v
+node  host      ip        attr            value
+node3 10.0.0.14 10.0.0.14 az              mars
+node3 10.0.0.14 10.0.0.14 xpack.installed true
+node2 10.0.0.13 10.0.0.13 az              earth
+node2 10.0.0.13 10.0.0.13 xpack.installed true
+node1 10.0.0.12 10.0.0.12 az              earth
+node1 10.0.0.12 10.0.0.12 xpack.installed true
+
+PUT _cluster/settings
+{
+  "persistent": {
+    "cluster.routing.allocation.awareness.attributes": "az"
+  }
+}
+
+
+PUT _cluster/settings
+{
+  "persistent": {
+    "cluster.routing.allocation.awareness.attributes": "az",
+    "cluster.routing.allocation.awareness.force.az.values":["earth", "mars"]
+  }
+}
+
+GET /_cluster/settings
+
+{
+  "persistent" : {
+    "cluster" : {
+      "routing" : {
+        "allocation" : {
+          "awareness" : {
+            "attributes" : "az",
+            "force" : {
+              "az" : {
+                "values" : [
+                  "earth",
+                  "mars"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "transient" : { }
+}
+
+
+
 
 
 # Reference
