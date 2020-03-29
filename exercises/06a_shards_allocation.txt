@@ -212,6 +212,34 @@ hamlet-2 0     p      STARTED    4 5.7kb 10.0.0.12 node1
 
 
 # remove allocation filter setting
+PUT hamlet-1/_settings
+{
+  "index.routing.allocation.include._name": null
+}
+
+PUT hamlet-2/_settings
+{
+  "index.routing.allocation.include._name": null
+}
+
+GET /hamlet-1/_settings
+
+{
+  "hamlet-1" : {
+    "settings" : {
+      "index" : {
+        "creation_date" : "1584884249521",
+        "number_of_shards" : "2",
+        "number_of_replicas" : "1",
+        "uuid" : "8-2zh2ADTHmoRfqfRhGThQ",
+        "version" : {
+          "created" : "7020199"
+        },
+        "provided_name" : "hamlet-1"
+      }
+    }
+  }
+}
 
 
 
