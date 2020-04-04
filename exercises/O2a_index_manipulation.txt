@@ -42,3 +42,19 @@ PUT hamlet/_doc/_bulk
 # Update all documents in `hamlet` by running the `set_is_hamlet` script
 # Remove from `hamlet` the documents that have either "KING CLAUDIUS" or "LAERTES" as the value of `speaker`
 # Delete all documents that start by "ham"
+
+
+# LAB STEPS
+GET _cat/indices
+GET _cat/templates
+
+PUT /_cluster/settings
+{
+   "persistent" : {
+  "action.destructive_requires_name":false
+}
+}
+
+DELETE hamlet*
+DELETE _template/hamlet*
+
