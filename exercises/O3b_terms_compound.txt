@@ -21,9 +21,12 @@
 # Filter documents with either the `OriginCityName` or the `DestCityName` fields matching the string "Sydney"
 # As above, but allow inexact fuzzy matching, with a maximum allowed "Levenshtein Edit Distance" set to 2. Test that the query strings "Sydney", "Sidney" and "Sidnei" always return the same number of results
 
+
+# LAB STEPS
 ### Run the next queries on the `kibana_sample_data_logs` index
 # Filter documents with the `response` field greater or equal to 400 and less than 500
 # As above, but add a second filter for documents with the `referer` field matching the string "http://twitter.com/success/guion-bluford"
+
 POST kibana_sample_data_logs/_search
 {
   "query": {
@@ -67,7 +70,22 @@ POST kibana_sample_data_logs/_search
   }
 }
 
-
+POST kibana_sample_data_logs/_search
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "fuzzy": {
+            "request": {
+              "value": "/people"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
 
 # Filter documents with the `memory` field containing any indexed value
 # (opposite of above) Filter documents with the `memory` field not containing any indexed value
@@ -115,7 +133,7 @@ POST kibana_sample_data_logs/_search
             "url": "name:john"
           }
         },
-          {
+        {
           "exists": {
             "field": "phpmemory"
           }
@@ -129,9 +147,9 @@ POST kibana_sample_data_logs/_search
 # Search for documents that have either the `response` field greater or equal to 400 or the `tags` field having the string "error"
 POST kibana_sample_data_logs/_search
 {
-  "query": {
-    "bool": {
-      "filter": [
+    "query": {
+      "bool": {
+      "should": [
         {
           "match": {
             "tags": "error"
@@ -145,6 +163,7 @@ POST kibana_sample_data_logs/_search
           }
         }
       ]
+      
     }
   }
 }
@@ -190,6 +209,19 @@ GET kibana_sample_data_logs/_search
 }
 
 # Filter documents with the `clientip` field having an IP address in the range "1.0.0.0"-"1.255.255.255"
+POST kibana_sample_data_logs/_search
+{
+    "query": {
+        "range" : {
+            "clientip" : {
+                "gte": "1.0.0.0", 
+                "lte": "1.255.255.255" 
+            }
+        }
+    }
+}
+
+
 
 ### Run the next queries on the `kibana_sample_data_flights` index
 # Filter documents with either the `OriginCityName` or the `DestCityName` fields matching the string "Sydney"
@@ -198,7 +230,7 @@ GET kibana_sample_data_flights/_search
 {
   "query": {
     "bool": {
-      "filter": [
+      "should": [
         {
           "fuzzy": {
             "OriginCityName": {
@@ -229,4 +261,8 @@ GET kibana_sample_data_flights/_search
 }
 
 #REFERENCE
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/query-dsl-range-query.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/query-dsl-fuzzy-query.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/query-filter-context.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/query-dsl-bool-query.html
 
