@@ -163,6 +163,20 @@ GET kibana_sample_data_logs/_search/template
 # Filter documents with the `OriginWeather` and `DestWeather` fields set to the same value
 
 GET kibana_sample_data_flights/_search
+{
+    "query": {
+        "bool" : {
+            "filter" : {
+                "script" : {
+                    "script" : {
+                        "source": "doc['OriginWeather'].value == doc['DestWeather'].value ",
+                        "lang": "painless"
+                     }
+                }
+            }
+        }
+    }
+}
 
 
 
