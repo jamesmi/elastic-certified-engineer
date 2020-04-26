@@ -59,8 +59,8 @@ POST kibana_sample_data_logs/_search
 # Search for documents with the `message` field containing the strings "Firefox" or "Kibana"
 GET kibana_sample_data_logs/_search
 {
-    "size": 10,
-     "query": {
+  "size": 10,
+  "query": {
     "bool": {
       "should": [
         {
@@ -76,9 +76,11 @@ GET kibana_sample_data_logs/_search
       ]
     }
   },
-    "sort": [
-        {"utc_time": "asc"}
-    ]
+  "sort": [
+    {
+      "utc_time": "asc"
+    }
+  ]
 }
 
 GET kibana_sample_data_logs/_search
@@ -137,7 +139,7 @@ GET kibana_sample_data_logs/_search
       "_id": "asc"
     }
   ],
-  "search_after": [1578802692345, "gGMT3W8Bp5ks7v1ZFQ0c"]
+  "search_after": [1586047142912, "LPjpbXEBFzUMUPVIvroz"]
 }
 
 
@@ -273,7 +275,7 @@ GET kibana_sample_data_logs/_search
 
 GET kibana_sample_data_ecommerce/_search
 {
-   "size": 10,
+  "size": 10,
   "query": {
     "bool": {
       "must": [
@@ -288,11 +290,18 @@ GET kibana_sample_data_ecommerce/_search
   "sort": [
     {
       "products.base_price": {
-        "order": "desc"
+        "order": "desc",
+        "mode": "min"
       }
     }
   ]
 }
 
 #REFERENCE
-
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/search-request-from-size.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/search-request-scroll.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/search-request-search-after.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/search-request-body.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/search-request-highlighting.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/query-dsl-match-query-phrase.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/search-request-sort.html
