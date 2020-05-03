@@ -195,3 +195,4 @@ GET hamlet_2/_search
 }}
 
 #REFERENCE
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/doc-values.html
