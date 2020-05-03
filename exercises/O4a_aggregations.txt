@@ -24,6 +24,7 @@
 # Add a pipeline aggregation named "day_with_the_most_popular_destination_over_all_days" that identifies the “flights_by_day” bucket with the largest “most_popular_destination_of_the_day” value
 
 
+## LAB STEPS
 ### Run the next queries on the `kibana_sample_data_flights` index
 # Create an aggregation named "max_distance" that calculates the maximum value of the `DistanceKilometers` field
 POST kibana_sample_data_flights/_search
@@ -233,10 +234,19 @@ POST kibana_sample_data_flights/_search
         "buckets_path": "flights_by_day>destinations_by_day"
       }
     }
+    
   }
 }
 
 
 #REFERENCE
-
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/search-aggregations-metrics-max-aggregation.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/search-aggregations-metrics-stats-aggregation.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/search-aggregations-metrics-cardinality-aggregation.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/search-aggregations-bucket-terms-aggregation.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/search-aggregations-bucket-histogram-aggregation.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/search-aggregations-bucket-datehistogram-aggregation.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/returning-aggregation-type.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/search-aggregations-pipeline-max-bucket-aggregation.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/search-aggregations-pipeline.html#buckets-path-syntax
 
