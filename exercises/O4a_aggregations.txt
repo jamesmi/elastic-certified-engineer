@@ -223,18 +223,27 @@ POST kibana_sample_data_flights/_search
       },
       "aggs": {
         "destinations_by_day": {
-          "cardinality": {
+          "terms": {
             "field": "DestCityName"
+          }
+        },
+        "most_popular_destination_of_the_day": {
+          "max_bucket": {
+            "buckets_path": "destinations_by_day._count"
           }
         }
       }
     },
-    "most_popular_destination_of_the_day": {
+    "day_with_most_flights": {
       "max_bucket": {
-        "buckets_path": "flights_by_day>destinations_by_day"
+        "buckets_path": "flights_by_day._count"
+      }
+    },
+    "day_with_the_most_popular_destination_over_all_days": {
+      "max_bucket": {
+        "buckets_path": "flights_by_day>most_popular_destination_of_the_day"
       }
     }
-    
   }
 }
 
