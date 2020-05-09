@@ -149,3 +149,10 @@ POST hamlet_2/_search
 }
 
 #REFERENCE
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/configuring-analyzers.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/analysis-lang-analyzer.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/analysis-custom-analyzer.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/_testing_analyzers.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/analysis-whitespace-analyzer.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/analysis-whitespace-tokenizer.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/analysis-condition-tokenfilter.htmls
