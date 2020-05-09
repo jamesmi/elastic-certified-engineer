@@ -104,7 +104,7 @@ PUT hamlet_1/_doc/_bulk
 {"index":{"_index":"hamlet_1","_id":"C1"}}
 {"name":"KING CLAUDIUS","relationship":[{"name":"HAMLET","type":"nephew"}]}
 
-
+GET hamlet_1
 
 # Verify that the items of the `relationship` array cannot be searched independently - e.g., searching for a friend named Gertrude will return 1 hit
 GET hamlet_1/_search
@@ -126,24 +126,6 @@ GET hamlet_1/_search
 # Define a mapping for the default type "_doc" of `hamlet_2`, so that the inner objects of the `relationship` field (i) can be searched independently, (ii) have only unanalyzed fields
 # Reindex `hamlet_1` to `hamlet_2`
 # Verify that the items of the `relationship` array can now be searched independently - e.g., searching for a friend named Gertrude will return no hits
-GET hamlet_2/_search
-{
-  "query": {
-    "nested": {
-      "path": "relationship",
-      "query": {
-        "bool": {
-          "must": [
-            { "match": { "relationship.name": "GERTRUDE" } },
-            { "match": { "relationship.type": "friend" } }
-          ]
-        }
-      }
-    }
-  }
-}
-
-
 
 DELETE hamlet_2
 PUT hamlet_2
@@ -161,7 +143,18 @@ PUT hamlet_2
   }
 }
 
-GET hamlet_2/_search 
+
+POST _reindex
+{
+  "source": {
+    "index":"hamlet_1"
+  },
+  "dest": {
+    "index":"hamlet_2"
+  }
+}
+
+GET hamlet_2/_search
 {
   "query": {
     "nested": {
@@ -169,10 +162,22 @@ GET hamlet_2/_search
       "query": {
         "bool": {
           "must": [
-            { "match": { "relationship.name": "gertrude" }},
-            { "match": { "relationship.type":  "friend" }} 
+            {
+              "match": {
+                "relationship.name": "gertrude"
+              }
+            },
+            {
+              "match": {
+                "relationship.type": "friend"
+              }
+            }
           ]
-}}}}}
+        }
+      }
+    }
+  }
+}
 
 
 # Add more documents to `hamlet_2` by running the following _bulk command
@@ -193,6 +198,7 @@ POST _bulk
 {"index":{"_index":"hamlet_2","_id":"L2"}}
 {"line_number":"1.4.3","speaker":"HAMLET","text_entry":"What hour now?"}
 
+GET /hamlet_2/_search
 
 # So far, we have indexed two kinds of documents, either related to characters (ids: C0, C1) or to a line of the dialogue (ids: L0, L1, L2). Notice that a character can have many lines. We will model this one-to-many relation in the next step
 # Create the index `hamlet_3` with only one primary shard and no replicas
@@ -229,6 +235,37 @@ POST _reindex
 }
 
 
+#At the moment, the “character_or_line” relationship exists only in the mapping but not in the data. We are going to create a script for it. The script will update all the line documents associated with a given character, which is specified as a script parameter. The update consists in setting the “character_or_line” join field in such a way as to bind the line documents to the right character document. For example, consider the following line document.
+#{
+# "line_number": "1.2.1",
+# "speaker":"KING CLAUDIUS",
+# "text_entry":"Though yet of Hamlet our dear brothers death"
+#}
+#Given that the character document of King Claudius has been indexed with id “C1”, after the script execution the document will have the new field below:
+#"character_or_line": { "name": "line", "parent": "C1" }
+
+
+POST hamlet_3/_search
+
+PUT hamlet_3/_doc/C1?refresh
+{
+  "text":"King Claudius",
+  "character_or_line": "character" 
+}
+
+
+PUT hamlet_3/_doc/3?routing=C1&refresh
+{
+  "line_number": "1.2.1",
+  "speaker": "KING CLAUDIUS",
+  "text_entry": "Though yet of Hamlet our dear brothers death",
+  "character_or_line": {
+    "name": "line",
+    "parent": "C1"
+  }
+}
+
+
 # Update the document with id `C0` (i.e., the character document of Hamlet) by adding the field `character_or_line` and setting its `character_or_line.name` value to "character"
 # Create a script named `init_lines` and save it into the cluster state. The script (i) has a parameter named `characterId`, (ii) adds the field `character_or_line` to the document, (iii) sets the value of `character_or_line.name` to "line" , (iv) sets the value of `character_or_line.parent` to the value of the `characterId` parameter
 # Update the documents in `hamlet_3` that have "HAMLET" as a `speaker`, by running the `init_lines` script with `characterId` set to "C0"
@@ -250,25 +287,6 @@ GET hamlet_3/_search
 
 
 
-POST hamlet_3/_search
-
-PUT hamlet_3/_doc/c1?refresh
-{
-  "text":"King Claudius",
-  "character_or_line": "character" 
-}
-
-
-PUT hamlet_3/_doc/3?routing=c1&refresh
-{
-  "line_number": "1.2.1",
-  "speaker": "KING CLAUDIUS",
-  "text_entry": "Though yet of Hamlet our dear brothers death",
-  "character_or_line": {
-    "name": "line",
-    "parent": "c1"
-  }
-}
 
 PUT _ingest/pipeline/update-character
 {
@@ -278,14 +296,14 @@ PUT _ingest/pipeline/update-character
           "source": """
             ctx.line_number = '1.3.27';
             ctx.character_or_line.name = 'line';
-            ctx.character_or_line.parent = 'c1';
+            ctx.character_or_line.parent = 'C1';
           """
         }
       }
     ]
 }
 
-POST hamlet_3/_update_by_query?routing=c1&pipeline=update-character
+POST hamlet_3/_update_by_query?routing=C1&pipeline=update-character
 {
   "query":{
     "term":{
@@ -306,9 +324,82 @@ POST hamlet_3/_update_by_query
     }
   },
   "script": {
-    "source": "ctx._source['line_number'] = '1.3.29'; ctx._source['character_or_line']['name'] = 'line'; ctx._source['character_or_line']['parent'] = 'c1'"
+    "source": "ctx._source['line_number'] = '1.3.29'; ctx._source['character_or_line']['name'] = 'line'; ctx._source['character_or_line']['parent'] = 'C1'"
   }
 }
 
+GET hamlet_3/_search
+GET hamlet_3/
+
+
+## C0 update method
+
+GET hamlet_3/_search
+GET hamlet_3/
+
+POST hamlet_3/_update/C0
+{
+    "script" : {
+          "source": """
+            ctx._source.put("character_or_line",params.new_data);
+          """,
+          "params": {
+            "new_data":{"name":"character"}
+          }
+        }
+    
+}
+
+
+
+PUT _ingest/pipeline/init_lines
+{
+  "processors": [
+    {
+      "script": {
+        "source": """ ctx.put("character_or_line",["name":"line","parent":params.characterId]);
+                      ctx._routing=params.characterId;
+        """,
+        "lang": "painless",
+        "params": {
+          "characterId": "C0"
+        }
+      }
+    }
+  ]
+}
+
+POST hamlet_3/_update_by_query?pipeline=init_lines
+{
+  "query": {
+    "match": {
+      "speaker": "HAMLET"
+    }
+  }
+}
+
+
+GET hamlet_3/_search
+{
+  "query": {
+    "has_parent": {
+      "parent_type": "character",
+      "query": {
+        "match": {
+          "name": "HAMLET"
+        }
+      }
+    }
+  }
+}
+
+
+
 #REFERENCE
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/nested.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/parent-join.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/modules-scripting.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/docs-update-by-query.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/query-dsl-has-parent-query.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.2/modules-scripting-fields.html
 
