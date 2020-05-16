@@ -49,6 +49,7 @@ cluster.remote.connect: false
 discovery.seed_hosts: ["esnode01", "esnode02", "esnode03"]
 cluster.initial_master_nodes: ["node1"]
 logger.org.elasticsearch.transport: debug
+bootstrap.memory_lock: true
 action.destructive_requires_name: true
 path.data: /var/lib/elasticsearch
 path.logs: /var/log/es
@@ -79,3 +80,4 @@ Check:
 curl -XGET "http://10.0.0.12:9201/_cluster/settings?include_defaults"
 
 References:
+
