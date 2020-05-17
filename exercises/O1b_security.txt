@@ -67,10 +67,10 @@ scp /etc/elasticsearch/elasticsearch.keystore node2:/etc/elasticsearch/elasticse
 
 systemctl start elasticsearch
 
-/usr/share/elasticsearch/bin/elasticsearch-setup-passwords 
+/usr/share/elasticsearch/bin/elasticsearch-setup-passwords interactive 
+(password is "elastic" for elastic,apm_system,kibana,logstash_system,beats_system,remote_monitoring_user)
 
 Kibana.yml:
-
 elasticsearch.username: "elastic"
 elasticsearch.password: "elastic"
 
